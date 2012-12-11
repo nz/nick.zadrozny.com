@@ -33,6 +33,6 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
-  jekyll
+  jekyll (~> 0.11)
   puma
   rack-jekyll
