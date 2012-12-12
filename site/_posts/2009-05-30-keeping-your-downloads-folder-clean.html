@@ -1,0 +1,13 @@
+---
+layout: post
+title: Keeping your Downloads folder clean
+tags: 
+type: regular
+---
+<p>A productivity tip for OS X: Keep your Trash and Downloads folder clean with the following script. Anything in Downloads older than seven days gets moved to the trash, while everything older than 30 days in the trash gets permanently deleted.
+
+<pre>#!/bin/sh
+find $HOME/Downloads -maxdepth 1 -atime +7 -exec mv '{}' $HOME/.Trash \;
+find $HOME/.Trash -maxdepth 1 -atime +30 -exec rm -rf '{}' \;</pre>
+
+I saved the above in a shell script at ~/.bin/cleanup.sh and use <a href="http://tuppis.com/lingon/">Lingon</a> to run it every ten minutes.</p>

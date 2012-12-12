@@ -1,3 +1,4 @@
 #\ -s puma
-require 'rack/jekyll'
-run Rack::Jekyll.new(:destination => 'public')
+require 'bundler/setup'
+require 'rack'
+run Rack::File.new("public")

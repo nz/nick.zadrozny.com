@@ -1,0 +1,15 @@
+---
+layout: post
+title: ! 'Gotcha: Building Merb from source'
+tags: 
+type: regular
+---
+<p>Trying to <a href="http://merbivore.com/get_merb.html">install the latest Merb</a> from source but having a problem with <code>rake install</code> for <code>merb-more</code>?</p>
+<pre>(in /usr/local/src/merb/merb-more)
+rake aborted!
+no such file to load -- merb-core/tasks/merb_rake_helper
+/usr/local/src/merb/merb-more/rakefile:12
+(See full trace by running task with --trace)
+</pre>
+<p>Assuming you had no problems installing <code>merb-core</code>, then it&#8217;s likely that <code>merb-core</code>&#8217;s lib directory is only readable by root. Try the install again with <code>sudo</code>, then check the permissions on the gems you just installed to make sure they&#8217;re readable to everyone. On OS X that might look something like this:</p>
+<pre>chmod -R a+rX /Library/Ruby/Gems/1.8/gems/merb*</pre>

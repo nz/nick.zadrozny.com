@@ -1,0 +1,9 @@
+---
+layout: post
+title: Two tips for updating to Rails 2.0
+tags: 
+type: regular
+---
+<p><ol><li>Check your routes for nested resources — <code>:name_prefix</code> isn&#8217;t blank by default anymore. Now it&#8217;s set to the singular of the parent resource. You can explicitly make that blank, use some find-and-replace regex-fu to fix your url helpers, and even get rid of url helpers altogether from your <code>link_to</code>s and <code>form_for</code>s.</li>
+<li>Not necessarily essential, but it&#8217;s nice to replace the old <code>rhtml</code> extensions for the shiny new <code>html.erb</code>. This bash one-liner should do the trick: <code>for i in `find . -type f -name "*.rhtml" | xargs`; do svn mv $i `echo $i|sed 's/rhtml/html.erb/'`; done</code></li>
+</ol></p>

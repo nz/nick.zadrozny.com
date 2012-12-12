@@ -2,7 +2,6 @@ source :rubygems
 
 ruby '1.9.3'
 
-gem 'rack-jekyll'
 gem 'puma'
 
 group :compile do

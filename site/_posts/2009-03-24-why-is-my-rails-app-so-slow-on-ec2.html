@@ -1,0 +1,13 @@
+---
+layout: post
+title: Why is my Rails app so slow on EC2?
+tags: 
+type: regular
+---
+<p>If you&#8217;re on a small instance, then, congratulations! Your app is CPU bound. Bump that sucker up to a medium if you want to break 40 req/sec.</p>
+
+<p>I spent the last few days bumping my head against this problem with an app that needed to support some seriously bursty traffic. We were running all the latest versions of Rails, Passenger, Ruby Enterprise Edition, and all that jazz on a fresh Ubuntu install with Apache 2. We tweaked the action, tweaked the Apache configs, tweaked about everything we could get our hands on. Many httperf and ab tests later, it still took us a while to be clued in on the real issue.</p>
+
+<p>On the other hand, booting up a medium instance with the same AMI now gives us over 200 requests per second on the same action. Now that&#8217;s more like it!</p>
+
+<p>Hopefully this post saves someone else a few hours of frustration ;-)</p>

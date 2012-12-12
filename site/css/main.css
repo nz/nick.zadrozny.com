@@ -1,22 +1,22 @@
+#site_title {
+  width: 50px;
+  margin-bottom: 20px;
+}
 
+#site_title h1 a {
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 10px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: inherit;
+}
 
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
+.post footer {
+  text-align: right;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.post.quote blockquote {
+  font-size: 20px;
+  line-height: 20px;
+}

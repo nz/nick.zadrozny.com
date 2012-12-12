@@ -18,14 +18,21 @@
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.3.min.js"><\/script>')</script>
     <script src="/js/vendor/bootstrap.min.js"></script>
     <script src="/js/main.js"></script>
-    <script src="/js/vendor/turbolinks.js"></script>
+    <!-- <script src="/js/vendor/turbolinks.js"></script> -->
   </head>
   <body>
     <!--[if lt IE 7]>
       <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
     <div class="container">
-      {{ content }}
+      <div id="site_title"><h1><a href="/">{{ site.title }}</h1></a></div>
+      <div class="row">
+        <div class="span2 prepend1 columns">
+        </div>
+        <div class="span8 prepend1 columns">
+          {{ content }}
+        </div>
+      </div>
     </div>
     <script>
       var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];

@@ -1,0 +1,13 @@
+---
+layout: post
+title: ! 'Ruby snippet: Generate a ten-character random alphanumeric string'
+tags:
+- ruby
+- rails
+- code
+- snippet
+type: regular
+---
+<p><code>a = ('A'..'Z').to_a+('a'..'z').to_a+(0..9).to_a
+(1..10).collect { a[rand(a.size)] }.join</code></p>
+<p>That&#8217;s 839,299,365,868,340,224 combinations, if you&#8217;re counting. Handy for creating unique, relatively-unpredictable URLs.</p>

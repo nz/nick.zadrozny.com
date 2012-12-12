@@ -1,0 +1,26 @@
+<article class="post {{ post['type'] }}">
+  
+  {% case post['type'] %}
+  {% when 'quote' %}
+    {% include quote.html %}
+  {% when 'link' %}
+    {% include link.html %}
+  {% else %}
+  
+    <header>
+      <h3>{{ post.title }}</h3>
+    </header>
+    {{ content || post.content }}
+    
+  {% endcase %}
+  
+  <footer>
+    {% if post.url %}
+      {% if post.url != page.url %}
+      <a href="{{ post.url }}">※</a>
+      {% endif %}
+    {% else %}
+      ※
+    {% endif %}
+  </footer>
+</article>

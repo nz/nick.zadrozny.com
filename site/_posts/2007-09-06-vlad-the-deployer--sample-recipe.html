@@ -1,0 +1,37 @@
+---
+layout: post
+title: Vlad the Deployer — Sample Recipe
+tags: 
+type: regular
+---
+<p>Here&#8217;s a recipe I&#8217;m using <em>right now</em> for a site of mine. It really is this easy—once you figure out what goes where. Note that I did need to dig in to Vlad and patch an issue or two (mongrel variables and web_command) but I&#8217;m told a fix is on the way.</p>
+
+<p>My favorite part is the custom <code>symlink_assets</code> and <code>deploy</code> tasks to get around the lack of Capistrano style &#8220;after&#8221; hooks. It&#8217;s just so natural and Rake-tastic!</p>
+
+<p><strong>Rakefile</strong> (excerpt)</p>
+
+<pre><code class="ruby">require 'vlad'
+Vlad.load 'config/deploy.rb'</code></pre>
+
+<p><strong>deploy.rb</strong></p>
+
+<pre><code class="ruby">set :application, "appname"
+set :domain, "appname.example"
+set :deploy_to, "/var/www/apps/#{application}"
+set :repository, "svn+ssh://#{domain}#{deploy_to}/repos/trunk"
+
+set :mongrel_port, 8020
+set :web_command, "sudo /usr/local/apache2/bin/apachectl"
+
+set :public_assets, %w(image_assets)
+
+namespace :vlad do
+  remote_task :symlink_assets do
+    run public_assets.collect do |asset|
+      "ln -s #{shared_path}/public/#{asset} #{current_release}/public"
+    end.join(" &amp;&amp; ")
+  end
+  remote_task :deploy =&gt; [
+    :update, :symlink_assets, :migrate, :start_app
+  ]
+end</code></pre>
