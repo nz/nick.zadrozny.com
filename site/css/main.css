@@ -1,13 +1,18 @@
 #site_title {
   width: 50px;
-  margin-bottom: 20px;
+  margin: 20px 0;
+}
+
+#site_title h1 {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 20px;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
 }
 
 #site_title h1 a {
-  font-size: 30px;
-  font-weight: bold;
-  line-height: 10px;
-  text-transform: uppercase;
   text-decoration: none;
   color: inherit;
 }

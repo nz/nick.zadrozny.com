@@ -1,4 +1,11 @@
 #\ -s puma
-require 'bundler/setup'
+
 require 'rack'
-run Rack::File.new("public")
+require 'rack/contrib/try_static'
+
+use Rack::TryStatic,
+  root: 'public',
+  urls: %w[/],
+  try: ['.html', 'index.html', '/index.html']
+
+run lambda { [404, { 'Content-Type' => 'text/html' }, ['Whoops! Page Not Found']] }
