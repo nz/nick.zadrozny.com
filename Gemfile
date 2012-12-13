@@ -3,6 +3,7 @@ source :rubygems
 ruby '1.9.3'
 
 gem 'puma'
+#gem 'rack-contrib', github: 'rack/rack-contrib', branch: 'master'
 gem 'rack-contrib'
 
 group :compile do
