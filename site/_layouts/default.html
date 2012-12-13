@@ -10,17 +10,21 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
-    <link rel="stylesheet" href="/css/main.css">
-    <script src="/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> -->
-    <!-- <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.3.min.js"><\/script>')</script> -->
-    <script src="/js/vendor/jquery-1.8.3.min.js"></script>
-    <script src="/js/vendor/bootstrap.min.js"></script>
-    <script src="/js/vendor/jquery.infinitescroll.js"></script>
-    <script src="/js/main.js"></script>
-    <!-- <script src="/js/vendor/turbolinks.js"></script> -->
+    {% css_asset_tag app %}
+    - /_assets/css/bootstrap.min.css
+    - /_assets/css/bootstrap-responsive.min.css
+    - /_assets/css/main.css
+    {% endcss_asset_tag %}
+
+    {% javascript_asset_tag app %}
+    - /_assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js
+    - /_assets/js/vendor/jquery-1.8.3.min.js
+    - /_assets/js/vendor/bootstrap.min.js
+    - /_assets/js/vendor/jquery.infinitescroll.js
+    - /_assets/js/vendor/turbolinks.js
+    - /_assets/js/main.js
+    {% endjavascript_asset_tag %}
+
   </head>
   <body>
     <!--[if lt IE 7]>
@@ -53,14 +57,10 @@
       </div>
     </div>
     <script>
-      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      var _gaq=[['_setAccount','UA-15675679-1'],['_trackPageview']];
       (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
       g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
       s.parentNode.insertBefore(g,s)}(document,'script'));
-      try {
-        var pageTracker = _gat._getTracker("UA-15675679-1");
-        pageTracker._trackPageview();
-      } catch(err) {}            
     </script>
   </body>
 </html>

@@ -8,6 +8,7 @@ gem 'rack-contrib'
 
 group :compile do
   gem 'jekyll', '~>0.11'
+  gem 'jekyll-asset-pipeline'
   gem 'rake'
   gem 'RedCloth'
 end

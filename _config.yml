@@ -30,7 +30,7 @@ root: /
 permalink: /posts/:year/:month/:day/:title/
 source: site
 destination: public
-plugins: plugins
+plugins: _plugins
 code_dir: downloads/code
 category_dir: posts/categories
 markdown: rdiscount
