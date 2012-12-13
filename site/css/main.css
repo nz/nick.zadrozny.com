@@ -41,3 +41,11 @@
   font-size: 20px;
   line-height: 20px;
 }
+
+.post.link h5 {
+  text-transform: uppercase;
+  color: #333;
+  font-weight: bold;
+  font-size: 1em;
+}
+
