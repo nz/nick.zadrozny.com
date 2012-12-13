@@ -10,19 +10,26 @@ require 'digest/md5'
 class TumblrImport
   
   attr_accessor :api_url
-  attr_accessor :per_page
   attr_accessor :current_page
-  attr_accessor :tumblr_posts
   attr_accessor :jekyll_posts
+  attr_accessor :per_page
   attr_accessor :posts_path
+  attr_accessor :site
+  attr_accessor :source_path
+  attr_accessor :tumblr_posts
+  attr_accessor :tumblr_url
   
   def initialize(url, dest)
-    @api_url      = "#{url.gsub(/\/$/,'')}/api/read/json/"
-    @per_page     = 50
-    @tumblr_posts = []
-    @jekyll_posts = []
+    @tumblr_url   = url.gsub(/\/$/,'')
+    @api_url      = "#{@tumblr_url}/api/read/json/"
     @current_page = 0
-    @posts_path   = File.expand_path("#{dest}/_posts", File.dirname(__FILE__))
+    @jekyll_posts = []
+    @per_page     = 50
+    @site         = Jekyll::Site.new(Jekyll.configuration({}))
+    @tumblr_posts = []
+    @source_path  = File.expand_path(dest, File.dirname(__FILE__))
+    @posts_path   = @source_path + "/_posts"
+
     FileUtils.mkdir_p("tmp/tumblr/cache")
     FileUtils.mkdir_p("tmp/tumblr/files")
     FileUtils.mkdir_p(@posts_path)
@@ -33,19 +40,35 @@ class TumblrImport
     begin
       puts "Processing page #{current_page}..."
       blog = fetch_and_parse("#{api_url}?num=#{per_page}&start=#{current_page * per_page}")
-      blog['posts'].each do |post|
-        write_post(post_to_jekyll_hash(post))
+      blog['posts'].each do |tumblr_post|
+        jekyll_post = to_jekyll(tumblr_post)
+        write_jekyll_post(jekyll_post)
+        write_redirect(tumblr_post, jekyll_post)
       end
       current_page = current_page + 1
     end until blog['posts'].size < per_page
   end
   
-  # Given a Jekyll-formatted post hash, write it out to disk
-  def write_post(post)
-    # output path and content
-    path    = "#{posts_path}/#{post[:name]}"
-    content = post[:header].to_yaml + "---\n" + post[:content]
-    
+  # we need to redirect /post/12345 and /post/12345/post-slug to the new post URL
+  def write_redirect(tumblr_post, jekyll_post)
+    jekyll_url = Jekyll::Post.new(site, source_path, "", jekyll_post[:name]).url
+    redirect_content = "<html><head><meta http-equiv='Refresh' content='0; " +
+                       "url=#{jekyll_url}'></head><body></body></html>"
+
+    tumblr_id_path   = URI.parse(tumblr_post['url']).path + '/index.html'
+    tumblr_slug_path = URI.parse(tumblr_post['url-with-slug']).path + '.html'
+
+    [tumblr_id_path, tumblr_slug_path].each do |path|
+      write_file(source_path + path, redirect_content)
+    end
+  end
+
+  def jekyll_path(jekyll_post)
+    "#{posts_path}/#{jekyll_post[:name]}"
+  end
+
+  # Write a file to disk if it doesn't exist or its contents have changed.
+  def write_file(path, content)
     # short-circuit to skip a file that hasn't changed
     contents_match = if FileTest.exists?(path)
       if Digest::MD5.digest(content.strip) == Digest::MD5.digest(File.open(path).read.strip)
@@ -55,18 +78,22 @@ class TumblrImport
     
     # write out the post
     unless contents_match
-      begin
-        File.open(path, "w") do |f|
-          f.puts(content)
-        end
-      rescue Errno::ENAMETOOLONG => e
-        puts "Filename too long, checking the original on Tumblr"
-        system "open #{post[:url]}"
+      FileUtils.mkdir_p(File.dirname(path))
+      File.open(path, "w") do |f|
+        f.puts(content)
       end
     end
   end
+
+  # Given a Jekyll-formatted post hash, write it out to disk
+  def write_jekyll_post(post)
+    # output path and content
+    path    = jekyll_path(post)
+    content = post[:header].to_yaml + "---\n" + post[:content]
+    write_file(path, content)
+  end
   
-  def post_to_jekyll_hash(post)
+  def to_jekyll(post)
     title = ""
     content = ""
     case post['type']
@@ -116,7 +143,7 @@ class TumblrImport
       content = post["video-player"].
                   gsub(/width="[0-9]+"/,  'width="470"').
                   gsub(/height="[0-9]+"/, 'height="265"')
-      
+
       unless post["video-caption"].nil?
         content << %(<div class="caption">) + post["video-caption"] << "</div>"
       end
