@@ -25,13 +25,29 @@
       <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
     <div class="container">
-      <div id="site_title"><h1><a href="/">{{ site.title }}</h1></a></div>
       <div class="row">
-        <div class="span2 prepend1 columns">
+        <div class="span3 offset2">
+          <div id="site_title">
+            <h1><a href="/">{{ site.title }}</h1></a>
+          </div>
         </div>
-        <div class="span8 prepend1 columns">
+      </div>
+      <div class="row">
+        <nav class="span3 offset2">
+          <div id="site_nav">
+            <ul class="nav">
+              <li>Ask me anything!</li>
+              <li>Post archive</li>
+              <li>RSS feed</li>
+            </ul>
+            <input type="search" name="q" class="span2"/>
+          </div>
+        </nav>
+        <article class="span5">
           {{ content }}
-        </div>
+        </article>
+        <aside class="span2">
+        </aside>
       </div>
     </div>
     <script>

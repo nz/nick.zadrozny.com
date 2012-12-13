@@ -31,13 +31,12 @@ class TumblrImport
   def run!
     current_page = 0
     begin
-      current_page = current_page + 1
       puts "Processing page #{current_page}..."
-      json = cached_open("#{api_url}?num=#{per_page}&start=#{current_page * per_page}")
-      blog = Yajl::Parser.parse(json)
+      blog = fetch_and_parse("#{api_url}?num=#{per_page}&start=#{current_page * per_page}")
       blog['posts'].each do |post|
         write_post(post_to_jekyll_hash(post))
       end
+      current_page = current_page + 1
     end until blog['posts'].size < per_page
   end
   
@@ -65,15 +64,6 @@ class TumblrImport
         system "open #{post[:url]}"
       end
     end
-  end
-  
-  def create_slug(str)
-    pieces = str.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '').split(/-/)
-    i = 0
-    while pieces[0, i+1].join('-').length < 50 && i < pieces.length
-      i += 1
-    end
-    pieces[0, i].join('-')
   end
   
   def post_to_jekyll_hash(post)
@@ -115,17 +105,17 @@ class TumblrImport
         content << "&#8212;" + post["quote-source"]
       end
     when "conversation"
-      title = post["conversation-title"]
+      title   = post["conversation-title"]
       content = "<section><dialog>"
       post["conversation"].each do |line|
         content << "<dt>#{line['label']}</dt><dd>#{line}</dd>"
       end
-      content << "</section></dialog>"
+      content << "</dialog></section>"
     when "video"
-      title = post["video-title"]
+      title   = post["video-title"]
       content = post["video-player"]
       unless post["video-caption"].nil?
-        content << "<br/>" + post["video-caption"]
+        content << %(<div class="caption">) + post["video-caption"] << "</div>"
       end
     else
       puts "Unknown post type: #{post['type']}"
@@ -133,7 +123,7 @@ class TumblrImport
     
     date  = Date.parse(post['date']).to_s
     title = Nokogiri::HTML(title).text
-    slug  = create_slug(title)
+    slug  = post['url-with-slug'].split('/').last
     {
       :name => slug.length > 0 ? "#{date}-#{slug}.html" : "#{date}.html",
       :header => {
@@ -150,17 +140,18 @@ class TumblrImport
   
   protected
   
-  def cached_open(url)
+  def fetch_and_parse(url)
     cachefile_path = "tmp/tumblr/cache/" + url.gsub(/[^a-z0-9]/,'-').gsub(/-+/,'-')
     if FileTest.exists?(cachefile_path)
-      open(cachefile_path).readlines.join("\n")[/\{.*\}/]
+      Yajl::Parser.parse(open(cachefile_path).read)
     else
       content = open(url)
-      content = content.readlines.join("\n")
+      content = content.readlines.join("\n")[/\{.*\}/]
+      json = Yajl::Parser.parse(content)
       cachefile = File.open(cachefile_path, 'w')
       cachefile.write(content)
       cachefile.close
-      content[/\{.*\}/]
+      json
     end
   end
   
