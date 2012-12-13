@@ -113,7 +113,10 @@ class TumblrImport
       content << "</dialog></section>"
     when "video"
       title   = post["video-title"]
-      content = post["video-player"]
+      content = post["video-player"].
+                  gsub(/width="[0-9]+"/,  'width="470"').
+                  gsub(/height="[0-9]+"/, 'height="265"')
+      
       unless post["video-caption"].nil?
         content << %(<div class="caption">) + post["video-caption"] << "</div>"
       end
