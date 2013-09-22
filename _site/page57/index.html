@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Nick Zadrozny</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+
+    <link rel="openid.server"
+      href="http://www.myopenid.com/server" />
+    <link rel="openid.delegate"
+      href="http://nzadrozny.myopenid.com/" />
+    <link rel="openid2.local_id"
+      href="http://nzadrozny.myopenid.com" />
+    <link rel="openid2.provider"
+      href="http://www.myopenid.com/server" />
+    <meta http-equiv="X-XRDS-Location"
+      content="http://www.myopenid.com/xrds?username=nzadrozny.myopenid.com" />
+
+    <link rel="stylesheet" href="/assets/main-e37502c09bc5c8f606052dc263766f10.css">
+
+    <script src="/assets/main-9c15037c90f2a1e32fa20710d9d1b9ef.js"></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="container">
+      <div class="row">
+        <div class="span3 offset2">
+          <div id="site_title">
+            <h1><a href="/">Nick Zadrozny</h1></a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <nav class="span3 offset2">
+          <div id="site_nav">
+            <ul class="nav">
+              <li>Ask me anything!</li>
+              <li>Post archive</li>
+              <li>RSS feed</li>
+            </ul>
+            <input type="search" name="q" class="span2"/>
+          </div>
+        </nav>
+        <article class="span5">
+          <div class="posts">
+  
+    
+    <article class="post link">
+  
+  
+    <article class="post link">
+  <h5><h3><a href="http://zenhabits.net/2007/09/design-your-life-what-would-you-do-if-you-had-nothing-to-do/">What Would You Do If You Had Nothing To Do?</a></h3>
+<p>Pretty much what I&#8217;m doing now, plus some of the <a href="http://nick.zadrozny.com/post/10392662">things I want to be doing</a> now. Wait, does that make too much sense?</p>
+</h5>
+</article>
+
+  
+  
+  <footer>
+    
+      
+      <a href="/posts/2007/09/06/what-would-you-do-if-you-had-nothing-to-do/">※</a>
+      
+    
+  </footer>
+</article>
+  
+    
+    <article class="post regular">
+  
+  
+  
+    <header>
+      <h3>Vlad the Deployer — Sample Recipe</h3>
+    </header>
+    <p>Here&#8217;s a recipe I&#8217;m using <em>right now</em> for a site of mine. It really is this easy—once you figure out what goes where. Note that I did need to dig in to Vlad and patch an issue or two (mongrel variables and web_command) but I&#8217;m told a fix is on the way.</p>
+
+<p>My favorite part is the custom <code>symlink_assets</code> and <code>deploy</code> tasks to get around the lack of Capistrano style &#8220;after&#8221; hooks. It&#8217;s just so natural and Rake-tastic!</p>
+
+<p><strong>Rakefile</strong> (excerpt)</p>
+
+<pre><code class="ruby">require 'vlad'
+Vlad.load 'config/deploy.rb'</code></pre>
+
+<p><strong>deploy.rb</strong></p>
+
+<pre><code class="ruby">set :application, "appname"
+set :domain, "appname.example"
+set :deploy_to, "/var/www/apps/#{application}"
+set :repository, "svn+ssh://#{domain}#{deploy_to}/repos/trunk"
+
+set :mongrel_port, 8020
+set :web_command, "sudo /usr/local/apache2/bin/apachectl"
+
+set :public_assets, %w(image_assets)
+
+namespace :vlad do
+  remote_task :symlink_assets do
+    run public_assets.collect do |asset|
+      "ln -s #{shared_path}/public/#{asset} #{current_release}/public"
+    end.join(" &amp;&amp; ")
+  end
+  remote_task :deploy =&gt; [
+    :update, :symlink_assets, :migrate, :start_app
+  ]
+end</code></pre>
+
+    
+  
+  
+  <footer>
+    
+      
+      <a href="/posts/2007/09/06/vlad-the-deployer-sample-recipe/">※</a>
+      
+    
+  </footer>
+</article>
+  
+    
+    <article class="post regular">
+  
+  
+  
+    <header>
+      <h3>Amusing Coincidence</h3>
+    </header>
+    <blockquote>
+<p>Nick Zadrozny is still wondering how exactly one might quantize fantasticness. <small>48m ago</small></p>
+<p>Polo Gore is fantastic. Seriously. <small>23h ago</small></p>
+</blockquote>
+<p>Amusing coincidence from Ariell&#8217;s Facebook news feed.</p>
+
+    
+  
+  
+  <footer>
+    
+      
+      <a href="/posts/2007/09/06/amusing-coincidence/">※</a>
+      
+    
+  </footer>
+</article>
+  
+    
+    <article class="post link">
+  
+  
+    <article class="post link">
+  <h5><h3><a href="http://www.positivityblog.com/index.php/2007/09/05/7-habits-of-highly-ineffective-people/">7 Habits of Highly Ineffective People</a></h3>
+<p>Guilty x 7.</p>
+</h5>
+</article>
+
+  
+  
+  <footer>
+    
+      
+      <a href="/posts/2007/09/06/7-habits-of-highly-ineffective-people/">※</a>
+      
+    
+  </footer>
+</article>
+  
+    
+    <article class="post regular">
+  
+  
+  
+    <header>
+      <h3>Evaluating e-whiteboards</h3>
+    </header>
+    <ol><li><a href="http://vyew.com/"><a href="http://vyew.com/">http://vyew.com/</a></a><ul><li>Long and kindof annoying signup process.</li><li>Multiple account tiers, free account has ads.</li><li>Email account validation.</li><li>Can manage lots of different &#8220;books&#8221; and pages.</li><li>Graphics are a little bit laggy.</li><li>Most robust?</li></ul></li><li><a href="http://www.skrbl.com/"><a href="http://www.skrbl.com/">http://www.skrbl.com/</a></a><ul><li>Drops you right into a whiteboard, no signup.</li><li>Doesn&#8217;t support Camino? Crashes Firefox? IE only?</li><li>No Mac support = deal breaker</li></ul></li><li><a href="http://www.imaginationcubed.com/"><a href="http://www.imaginationcubed.com/">http://www.imaginationcubed.com/</a></a><ul><li>Drops you right into a whiteboard, no signup.</li><li>Less Software - less to think about.</li><li>Pen graphic is a bit distracting.</li><li>Easy (and very cool) replay tool.</li><li>No eraser? Type tool is a bit glitchy.</li><li>Sharing is a bit glitchy too.</li></ul></li></ol><p>In the end, I ended up being the most productive in Vyew. Working Software comes before Less Software, and some of their tools and features came in very handy indeed.</p>
+
+    
+  
+  
+  <footer>
+    
+      
+      <a href="/posts/2007/09/05/evaluating-e-whiteboards/">※</a>
+      
+    
+  </footer>
+</article>
+  
+    
+    <article class="post link">
+  
+  
+    <article class="post link">
+  <h5><h3><a href="http://www.biblegateway.com/passage/?search=1%20cor%2015:58&version=31">1 Corinthians 15:58</a></h3>
+<p>Therefore, my dear brothers, stand firm. Let nothing move you. Always give yourselves fully to the work of the Lord, because you know that your labor in the Lord is not in vain.</p>
+</h5>
+</article>
+
+  
+  
+  <footer>
+    
+      
+      <a href="/posts/2007/09/05/1-corinthians-15-58/">※</a>
+      
+    
+  </footer>
+</article>
+  
+    
+    <article class="post conversation">
+  
+  
+  
+    <header>
+      <h3>Lindsay the Prophet</h3>
+    </header>
+    <section><dialog><dt>Nick:</dt><dd>{"name"=>"Nick", "label"=>"Nick:", "phrase"=>"i could see myself living in seattle and putting together a discipleship group with them\r"}</dd><dt>Nick:</dt><dd>{"name"=>"Nick", "label"=>"Nick:", "phrase"=>"my pastoral calling chomping at the bit, i guess\r"}</dd><dt>Lindsay:</dt><dd>{"name"=>"Lindsay", "label"=>"Lindsay:", "phrase"=>"ok. LIVE IN SEATTLE.\r"}</dd><dt>Lindsay:</dt><dd>{"name"=>"Lindsay", "label"=>"Lindsay:", "phrase"=>"that's what god wants.\r"}</dd><dt>Lindsay:</dt><dd>{"name"=>"Lindsay", "label"=>"Lindsay:", "phrase"=>"will you submit to his will?\r"}</dd><dt>Nick:</dt><dd>{"name"=>"Nick", "label"=>"Nick:", "phrase"=>"\"Ah heahd from onn hiighuh -- a worrrrd from the Lawd!\"\r"}</dd><dt>Lindsay:</dt><dd>{"name"=>"Lindsay", "label"=>"Lindsay:", "phrase"=>"the destiny is in your hands\r"}</dd><dt>Lindsay:</dt><dd>{"name"=>"Lindsay", "label"=>"Lindsay:", "phrase"=>"hahaha\r"}</dd><dt>Lindsay:</dt><dd>{"name"=>"Lindsay", "label"=>"Lindsay:", "phrase"=>"yess\r"}</dd><dt>Lindsay:</dt><dd>{"name"=>"Lindsay", "label"=>"Lindsay:", "phrase"=>"hark! the harkson says you must stay here\r"}</dd><dt>Nick:</dt><dd>{"name"=>"Nick", "label"=>"Nick:", "phrase"=>"Wilt thou Hearken unto the Son?"}</dd></dialog></section>
+
+    
+  
+  
+  <footer>
+    
+      
+      <a href="/posts/2007/09/04/lindsay-the-prophet/">※</a>
+      
+    
+  </footer>
+</article>
+  
+    
+    <article class="post video">
+  
+  
+  
+    <header>
+      <h3></h3>
+    </header>
+    <iframe width="470" height="265" src="http://www.youtube.com/embed/CMNry4PE93Y?wmode=transparent&autohide=1&egm=0&hd=1&iv_load_policy=3&modestbranding=1&rel=0&showinfo=0&showsearch=0" frameborder="0" allowfullscreen></iframe><div class="caption"><p>&#8220;I like turtles.&#8221;</p></div>
+
+    
+  
+  
+  <footer>
+    
+      
+      <a href="/posts/2007/09/04/i-like-turtles/">※</a>
+      
+    
+  </footer>
+</article>
+  
+    
+    <article class="post link">
+  
+  
+    <article class="post link">
+  <h5><h3><a href="http://www.biblegateway.com/passage/?search=1%20john%202:15-16;&version=31;">1 John 2:15-16</a></h3>
+<p>Do not love the world or anything in the world. If anyone loves the world, the love of the Father is not in him. For everything in the world—the cravings of sinful man, the lust of his eyes and the boasting of what he has and does—comes not from the Father but from the world.</p>
+</h5>
+</article>
+
+  
+  
+  <footer>
+    
+      
+      <a href="/posts/2007/09/03/1-john-2-15-16/">※</a>
+      
+    
+  </footer>
+</article>
+  
+    
+    <article class="post quote">
+  
+  
+    <article class="post quote">
+  <blockquote>If anyone would come after me, he must deny himself and take up his cross daily and follow me.</blockquote>&#8212;<a href="http://www.biblegateway.com/passage/?search=luke%209:23&amp;version=31">Jesus of Nazareth (Luke 9:23)</a>
+
+</article>
+
+  
+  
+  <footer>
+    
+      
+      <a href="/posts/2007/09/02/if-anyone-would-come-after-me-he-must-deny/">※</a>
+      
+    
+  </footer>
+</article>
+  
+<div>
+
+<div class="pagination">
+  
+    <a class="prev" href="/page58">&larr; Older</a>
+    |
+  
+  <a href="/blog/archives">Blog Archives</a>
+  
+  |
+  <a class="next" href="/page56">Newer &rarr;</a>
+  
+</div>
+
+        </article>
+        <aside class="span2">
+        </aside>
+      </div>
+    </div>
+    <script>
+      var _gaq=[['_setAccount','UA-15675679-1'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Vlad the Deployer — Sample Recipe</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+
+    <link rel="openid.server"
+      href="http://www.myopenid.com/server" />
+    <link rel="openid.delegate"
+      href="http://nzadrozny.myopenid.com/" />
+    <link rel="openid2.local_id"
+      href="http://nzadrozny.myopenid.com" />
+    <link rel="openid2.provider"
+      href="http://www.myopenid.com/server" />
+    <meta http-equiv="X-XRDS-Location"
+      content="http://www.myopenid.com/xrds?username=nzadrozny.myopenid.com" />
+
+    <link rel="stylesheet" href="/assets/main-e37502c09bc5c8f606052dc263766f10.css">
+
+    <script src="/assets/main-9c15037c90f2a1e32fa20710d9d1b9ef.js"></script>
+
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="container">
+      <div class="row">
+        <div class="span3 offset2">
+          <div id="site_title">
+            <h1><a href="/">Nick Zadrozny</h1></a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <nav class="span3 offset2">
+          <div id="site_nav">
+            <ul class="nav">
+              <li>Ask me anything!</li>
+              <li>Post archive</li>
+              <li>RSS feed</li>
+            </ul>
+            <input type="search" name="q" class="span2"/>
+          </div>
+        </nav>
+        <article class="span5">
+          
+<article class="post regular">
+  
+  
+  
+    <header>
+      <h3>Vlad the Deployer — Sample Recipe</h3>
+    </header>
+    <p>Here&#8217;s a recipe I&#8217;m using <em>right now</em> for a site of mine. It really is this easy—once you figure out what goes where. Note that I did need to dig in to Vlad and patch an issue or two (mongrel variables and web_command) but I&#8217;m told a fix is on the way.</p>
+
+<p>My favorite part is the custom <code>symlink_assets</code> and <code>deploy</code> tasks to get around the lack of Capistrano style &#8220;after&#8221; hooks. It&#8217;s just so natural and Rake-tastic!</p>
+
+<p><strong>Rakefile</strong> (excerpt)</p>
+
+<pre><code class="ruby">require 'vlad'
+Vlad.load 'config/deploy.rb'</code></pre>
+
+<p><strong>deploy.rb</strong></p>
+
+<pre><code class="ruby">set :application, "appname"
+set :domain, "appname.example"
+set :deploy_to, "/var/www/apps/#{application}"
+set :repository, "svn+ssh://#{domain}#{deploy_to}/repos/trunk"
+
+set :mongrel_port, 8020
+set :web_command, "sudo /usr/local/apache2/bin/apachectl"
+
+set :public_assets, %w(image_assets)
+
+namespace :vlad do
+  remote_task :symlink_assets do
+    run public_assets.collect do |asset|
+      "ln -s #{shared_path}/public/#{asset} #{current_release}/public"
+    end.join(" &amp;&amp; ")
+  end
+  remote_task :deploy =&gt; [
+    :update, :symlink_assets, :migrate, :start_app
+  ]
+end</code></pre>
+
+    
+  
+  
+  <footer>
+    
+      
+    
+  </footer>
+</article>
+        </article>
+        <aside class="span2">
+        </aside>
+      </div>
+    </div>
+    <script>
+      var _gaq=[['_setAccount','UA-15675679-1'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+  </body>
+</html>
