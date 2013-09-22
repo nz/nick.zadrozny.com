@@ -6,8 +6,8 @@ require 'rack/contrib/try_static'
 require 'rack/contrib/not_found'
 
 use Rack::TryStatic,
-  root: 'public',
+  root: '_site',
   urls: %w[/],
   try: ['.html', 'index.html', '/index.html']
 
-run Rack::NotFound.new(File.expand_path('public/404.html', File.dirname(__FILE__)))
+run Rack::NotFound.new(File.expand_path('_site/404.html', File.dirname(__FILE__)))

@@ -1,14 +1,11 @@
-source :rubygems
-
-ruby '1.9.3'
+source 'https://rubygems.org'
 
 gem 'puma'
-#gem 'rack-contrib', github: 'rack/rack-contrib', branch: 'master'
 gem 'rack-contrib'
 
 group :compile do
-  gem 'jekyll', '~>0.11'
-  gem 'jekyll-asset-pipeline'
+  gem 'jekyll', '>1.0'
+  gem 'jekyll-assets'
   gem 'rake'
   gem 'RedCloth'
 end
